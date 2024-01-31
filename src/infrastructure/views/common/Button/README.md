@@ -11,5 +11,5 @@ See [ButtonProps](/src/domain/models/Button/README.md)
 Just import it like:
 
 ```
-import Button from 'src/domain/models/Button/
+import Button from 'src/infrastructure/views/common/Button'
 ```
