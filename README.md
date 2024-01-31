@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+# Juan Ignacio Gidoni Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+In this repository you can find all my own code for my personal website. Check it [here](https://github.com/JuanGidoni)
 
-Currently, two official plugins are available:
+Currently, this website is under construction. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## List of things that I want to have here
 
-## Expanding the ESLint configuration
+I'm improving constantly my knowledge in the Frontend area and this year I want to put all that I know, like `Hexagonal Arquitecture`, in action.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+List to things:
 
-- Configure the top-level `parserOptions` property like this:
+- `Hexagonal Arquitecture`
+- My own `API REST`
+- `React` App with `Typescript`
+- My own d`esign`
+- Use `Docs as Code`
+- Test Driven Development
+- A plus, I will export in an `index.ts` every core features or functionalites to improve the imports (may be I'll use dynamic imports)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+I will try to update everything asap or everyday.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Version 00.00.01
