@@ -7,4 +7,3 @@ The core props that will this button use are the next ones:
 - `type` [Gets the classification and default behavior of the button]
 - `onClick` [Call a function when a button is clicked]
 - `className` [String of CSS classes]
-
