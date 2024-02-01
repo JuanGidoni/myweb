@@ -1,4 +1,4 @@
-import { ButtonProps } from "../../../../domain/models/Button";
+import { ButtonProps } from "../../../../domain/models/common/button";
 
 
 export default function Button(props: ButtonProps) {
