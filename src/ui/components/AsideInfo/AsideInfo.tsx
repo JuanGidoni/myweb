@@ -33,7 +33,7 @@ const AsideInfo = () => {
                         </div>
                         <div className="contact-info">
                             <p className="contact-title">Email</p>
-                            <a href="mailto:rishikasharma0064@gmail.com" className="contact-link">contact@juani.dev</a>
+                            <a href="mailto:juan.gidoni@gmail.com" className="contact-link">contact@juani.dev</a>
                         </div>
                     </li>
                     <li className="contact-item">
