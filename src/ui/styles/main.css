@@ -13,61 +13,61 @@
     --bg-gradient-onyx: linear-gradient(
             /* avatar box */
             to bottom right,
-            hsl(249, 33%, 78%),
-            hsl(250, 45%, 71%));
+            hsl(216, 33%, 78%),
+            hsl(221, 71%, 57%));
     --bg-gradient-jet: linear-gradient(
             /* what I'm doing */
             to bottom right,
-            hsla(253, 33%, 89%, 0.945),
-            hsl(249, 24%, 83%));
+            hsla(213, 32%, 89%, 0.945),
+            hsl(203, 24%, 83%));
     --bg-gradient-yellow-1: linear-gradient(
             /* apparently idk */
             to bottom right,
-            hsl(283, 71%, 86%),
-            hsla(277, 57%, 78%, 0.546));
+            hsl(212, 72%, 86%),
+            hsla(212, 57%, 78%, 0.546));
     --bg-gradient-yellow-2: linear-gradient(
             /* effect before hover */
             135deg,
-            hsla(278, 30%, 85%, 0.712) 0%,
-            hsl(250, 22%, 78%));
+            hsla(206, 30%, 85%, 0.712) 0%,
+            hsl(215, 21%, 78%));
     --border-gradient-onyx: linear-gradient(
             /* shadow behind widgets */
             to bottom right,
-            hsla(255, 6%, 62%, 0.727) 0%,
-            hsl(249, 28%, 82%) hsla(255, 6%, 62%, 0.727) 0%,
-            hsl(249, 28%, 82%));
+            hsla(200, 6%, 62%, 0.727) 0%,
+            hsl(208, 28%, 82%) hsla(205, 6%, 62%, 0.727) 0%,
+            hsl(198, 28%, 82%));
     --text-gradient-yellow: linear-gradient(
             /* resume graph line and add on lines */
             to right,
-            hsla(251, 36%, 63%, 0.866),
-            hsla(250, 65%, 63%, 0.866));
+            hsla(204, 36%, 63%, 0.866),
+            hsla(209, 65%, 63%, 0.866));
     --smoky-black: linear-gradient(
             /* card bg bg */
             to bottom,
-            hsl(252, 25%, 88%),
-            hsla(249, 36%, 68%, 0.92) hsla(251, 36%, 63%, 0.866),
-            hsla(250, 65%, 63%, 0.866));
+            hsl(204, 25%, 88%),
+            hsla(204, 36%, 68%, 0.92) hsla(212, 36%, 63%, 0.866),
+            hsla(214, 65%, 63%, 0.866));
     --smoky-black: linear-gradient(
             /* card bg bg */
             to bottom,
-            hsl(252, 25%, 88%),
-            hsla(249, 36%, 68%, 0.92));
+            hsl(208, 25%, 88%),
+            hsla(216, 36%, 68%, 0.92));
 
     /* solid */
 
     --jet: hsl(0, 2%, 61%);
     /* card border */
-    --onyx: hsla(250, 65%, 63%, 0.866);
+    --onyx: hsla(207, 65%, 63%, 0.866);
     /* data science bg */
-    --eerie-black-1: hsl(250, 33%, 86%);
+    --eerie-black-1: hsl(203, 32%, 86%);
     /* widget bg */
     --eerie-black-2: #ffffff;
     /* card bg */
     --jet: hsl(0, 2%, 61%);
     /* card border */
-    --onyx: hsla(250, 65%, 63%, 0.866);
+    --onyx: hsla(212, 65%, 63%, 0.866);
     /* data science bg */
-    --eerie-black-1: hsl(250, 33%, 86%);
+    --eerie-black-1: hsl(206, 32%, 86%);
     /* widget bg */
     --eerie-black-2: #ffffff;
     /* card bg */
@@ -77,33 +77,33 @@
     /* THE TITLE */
     --orange-yellow-crayola: hsl(0, 0%, 0%);
     /* widget color and show contact txt */
-    --orange-yellow-crayola1: hsl(249, 88%, 87%);
+    --orange-yellow-crayola1: hsl(204, 88%, 87%);
     /* navbar word highlight */
-    --vegas-gold: hsla(255, 64%, 61%, 0.951);
+    --vegas-gold: hsla(214, 64%, 61%, 0.951);
     /* resume year*/
     --orange-yellow-crayola: hsl(0, 0%, 0%);
     /* widget color and show contact txt */
-    --orange-yellow-crayola1: hsl(249, 88%, 87%);
+    --orange-yellow-crayola1: hsl(207, 88%, 87%);
     /* navbar word highlight */
-    --vegas-gold: hsla(255, 64%, 61%, 0.951);
+    --vegas-gold: hsla(219, 64%, 61%, 0.951);
     /* resume year*/
     --light-gray: hsl(0, 4%, 17%);
     /* general and navbar text*/
     --gray-tone: hsla(240, 2%, 44%, 0.866);
     /* navbar bg */
-    --light-gray-70: hsla(255, 46%, 59%, 0.951);
+    --light-gray-70: hsla(219, 46%, 59%, 0.951);
     /* TITLES in show contact */
-    --gray-tone: hsla(240, 2%, 44%, 0.866);
+    --gray-tone: hsla(225, 2%, 44%, 0.866);
     /* navbar bg */
-    --light-gray-70: hsla(255, 46%, 59%, 0.951);
+    --light-gray-70: hsla(219, 46%, 59%, 0.951);
     /* TITLES in show contact */
     --light-gray-71: hsla(0, 0%, 84%, 0.7);
     /* hover effect */
     --bittersweet-shimmer: hsl(0, 43%, 51%);
     /* invalid */
-    --toggle: rgb(108, 72, 171);
+    --toggle: rgb(72, 115, 171);
     /* toggle color */
-    --purple: #6c48ab;
+    --purple: #4862ab;
     /* service icon */
 
     /**
@@ -1774,6 +1774,7 @@ textarea.form-input::-webkit-resizer {
 
     .sidebar.active {
         max-height: 584px;
+        color: var(--purple);
     }
 
     .sidebar-info {
