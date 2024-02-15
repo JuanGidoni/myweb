@@ -267,7 +267,7 @@ button {
     font: inherit;
     background: none;
     border: none;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
 }
 
@@ -674,6 +674,7 @@ main {
     justify-content: center;
     align-items: center;
     padding: 0 10px;
+    width: 100%;
 }
 
 .navbar-link {
@@ -688,9 +689,22 @@ main {
     color: var(--light-gray-70);
 }
 
-.navbar-link.active {
+.navbar-link svg {
+    color: var(--white-1);
+    font-size: var(--fs-8);
+    font-size: 3em;
+    transition: color var(--transition-1);
+}
+
+.navbar-link svg.active {
     color: var(--orange-yellow-crayola1);
 }
+
+.navbar-link svg:hover,
+.navbar-link svg:focus {
+    color: var(--orange-yellow-crayola1);
+}
+
 
 
 /*-----------------------------------*\

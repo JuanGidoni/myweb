@@ -1,8 +1,23 @@
+import { useState } from 'react'
 import Logo from '../../assets/logo.jpeg'
 import Icon from '../Icon/Icon'
 const AsideInfo = () => {
+    const [menuOpen, setMenuOpen] = useState(false)
+
+
+    // togle more info shoould add active to sidebar 
+    const toggleMoreInfo = () => {
+        setMenuOpen(!menuOpen)
+        const sidebar = document.querySelector('.sidebar')
+        if (menuOpen) {
+            sidebar?.classList.remove('active')
+        } else {
+            sidebar?.classList.add('active')
+        }
+    }
+
     return (
-        <aside className="sidebar" data-sidebar>
+        <aside className="sidebar">
             <div className="sidebar-info">
                 <figure className="avatar-box">
                     <img src={Logo} alt="Juan Ignacio Gidoni" width="80" />
@@ -12,16 +27,8 @@ const AsideInfo = () => {
                     <p className="title">Software Developer</p>
                 </div>
 
-                <button id="theme" onClick={
-                    () => {
-                        const body = document.querySelector('body')
-                        body?.classList.toggle('dark-theme')
-                    }
-                }>🌙</button>
-
-                <button className="info_more-btn" data-sidebar-btn>
-                    <span>Show Contacts</span>
-                    {/* TODO: Icon and button should expand sidebar-info_more */}
+                <button className="info_more-btn" onClick={() => toggleMoreInfo()}>
+                    <span><Icon name='menu' /></span>
                 </button>
             </div>
             <div className="sidebar-info_more">
@@ -70,7 +77,6 @@ const AsideInfo = () => {
                     </li>
                 </ul>
             </div>
-
         </aside >
     )
 }
