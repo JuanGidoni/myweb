@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faHome, faGraduationCap, faBriefcase, faEnvelope, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faGraduationCap, faBriefcase, faEnvelope, faMapLocationDot, faBars, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 // Add more icons as needed
@@ -14,6 +14,8 @@ const icons: Record<string, IconDefinition> = {
     github: faGithub,
     linkedin: faLinkedin,
     location: faMapLocationDot,
+    menu: faBars,
+    left: faArrowLeftLong
 };
 
 export const IconContext = React.createContext(icons);

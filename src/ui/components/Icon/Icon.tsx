@@ -7,9 +7,10 @@ import { IconContext } from '../../context/IconContext';
 interface IconProps {
     name: string;
     color?: string;
+    title?: string;
 }
 
-const Icon: React.FC<IconProps> = ({ name, color }) => {
+const Icon: React.FC<IconProps> = ({ name, color, title }) => {
     const icons = useContext(IconContext);
     const icon = icons[name];
 
@@ -17,7 +18,7 @@ const Icon: React.FC<IconProps> = ({ name, color }) => {
         throw new Error(`Icon "${name}" is not registered.`);
     }
 
-    return <FontAwesomeIcon icon={icon} color={color} />;
+    return <FontAwesomeIcon icon={icon} color={color} title={title} />;
 };
 
 export default Icon;
