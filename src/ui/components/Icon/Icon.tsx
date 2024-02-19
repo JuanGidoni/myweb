@@ -8,9 +8,25 @@ interface IconProps {
     name: string;
     color?: string;
     title?: string;
+    size?: "2xs"
+    | "xs"
+    | "sm"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "1x"
+    | "2x"
+    | "3x"
+    | "4x"
+    | "5x"
+    | "6x"
+    | "7x"
+    | "8x"
+    | "9x"
+    | "10x"
 }
 
-const Icon: React.FC<IconProps> = ({ name, color, title }) => {
+const Icon: React.FC<IconProps> = ({ name, color, title, size }) => {
     const icons = useContext(IconContext);
     const icon = icons[name];
 
@@ -18,7 +34,7 @@ const Icon: React.FC<IconProps> = ({ name, color, title }) => {
         throw new Error(`Icon "${name}" is not registered.`);
     }
 
-    return <FontAwesomeIcon icon={icon} color={color} title={title} />;
+    return <FontAwesomeIcon icon={icon} color={color} title={title} size={size} />;
 };
 
 export default Icon;

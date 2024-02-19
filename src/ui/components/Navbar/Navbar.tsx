@@ -14,12 +14,12 @@ const Navbar = () => {
                 {activeLink === 'resume' ? (
                     <li className='navbar-item'>
                         <Link to="/" className='navbar-link' onClick={() => handleActiveLink('')}>
-                            <Icon name='left' title='Return about me' />
+                            <Icon name='left' title='Return about me' /> Go back
                         </Link>
                     </li>
                 ) :
                     <li className='navbar-item'>
-                        <Link to="/resume" className={activeLink === 'resume' ? 'navbar-link active' : 'navbar-link'} onClick={() => handleActiveLink('resume')}><Icon name='briefcase' title='Resume' /></Link>
+                        <Link to="/resume" className={activeLink === 'resume' ? 'navbar-link active' : 'navbar-link'} onClick={() => handleActiveLink('resume')}>Resume <Icon name='briefcase' title='Resume' /></Link>
                     </li>
                 }
             </ul>
