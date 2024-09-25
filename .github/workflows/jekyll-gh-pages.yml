@@ -2,26 +2,20 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ['master']
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: 'pages'
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -37,14 +31,14 @@ jobs:
           rm -rf node_modules
           rm -f package-lock.json
 
-      # Option 1: Regenerate package-lock.json after cleaning
-      - name: Install dependencies and regenerate lock file
-        run: npm install --package-lock-only
-
-      # Option 2: Install dependencies conditionally (use npm ci if lockfile exists)
-      # - name: Install dependencies
-      #   run: |
-      #     if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci;  # Clean install with lockfile
+          else
+            npm install;  # Regular install if lockfile is missing
+          fi
 
       # Build the project
       - name: Build
