@@ -4,7 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["master"]
+    branches: ['master']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,7 +17,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -37,16 +37,14 @@ jobs:
           rm -rf node_modules
           rm -f package-lock.json
 
-      # Set up Node.js with caching enabled
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.12.1
-          cache: "npm"
+      # Option 1: Regenerate package-lock.json after cleaning
+      - name: Install dependencies and regenerate lock file
+        run: npm install --package-lock-only
 
-      # Install dependencies with force or CI
-      - name: Install dependencies
-        run: npm install --force
+      # Option 2: Install dependencies conditionally (use npm ci if lockfile exists)
+      # - name: Install dependencies
+      #   run: |
+      #     if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
       # Build the project
       - name: Build
@@ -60,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: "./dist"
+          path: './dist'
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
