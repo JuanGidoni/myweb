@@ -1,30 +1,55 @@
-import { Link } from 'react-router-dom';
-import './Navbar.css';
-import { useState } from 'react';
-import Icon from '../Icon/Icon';
+import React from "react";
+import Icon from "../Icon/Icon";
 
 const Navbar = () => {
-    const [activeLink, setActiveLink] = useState('about');
-    const handleActiveLink = (link: string) => {
-        setActiveLink(link);
+  const handleClick = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    sectionId: string
+  ) => {
+    event.preventDefault();
+    const section = document.querySelector(sectionId);
+    if (section) {
+      const offsetTop =
+        section.getBoundingClientRect().top + window.scrollY - 40;
+      window.scrollTo({ top: offsetTop, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    return (
-        <nav className="navbar">
-            <ul className='navbar-list'>
-                {activeLink === 'resume' ? (
-                    <li className='navbar-item'>
-                        <Link to="/" className='navbar-link' onClick={() => handleActiveLink('')}>
-                            <Icon name='left' title='Return about me' /> Go back
-                        </Link>
-                    </li>
-                ) :
-                    <li className='navbar-item'>
-                        <Link to="/resume" className={activeLink === 'resume' ? 'navbar-link active' : 'navbar-link'} onClick={() => handleActiveLink('resume')}>Resume <Icon name='briefcase' title='Resume' /></Link>
-                    </li>
-                }
-            </ul>
-        </nav >
-    );
+  };
+
+  return (
+    <nav className="newNavbar">
+      <ul className="newNavbar-list">
+        <li className="newNavbar-item">
+          <a
+            href="#about"
+            className="navbar-link"
+            onClick={(e) => handleClick(e, "#about")}
+          >
+            <Icon name="home" color="#fff" size="lg" />
+          </a>
+        </li>
+        <li className="newNavbar-item">
+          <a
+            href="#services"
+            className="navbar-link"
+            onClick={(e) => handleClick(e, "#services")}
+          >
+            <Icon name="sitemap" color="#fff" size="lg" />
+          </a>
+        </li>
+        <li className="newNavbar-item">
+          <a
+            href="#resume"
+            className="navbar-link"
+            onClick={(e) => handleClick(e, "#resume")}
+          >
+            <Icon name="briefcase" color="#fff" size="lg" />
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
 };
 
 export default Navbar;

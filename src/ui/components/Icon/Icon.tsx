@@ -1,14 +1,15 @@
 // File: src/ui/components/Icon.tsx
 
-import React, { useContext } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconContext } from '../../context/IconContext';
+import React, { useContext } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconContext } from "../../context/IconContext";
 
 interface IconProps {
-    name: string;
-    color?: string;
-    title?: string;
-    size?: "2xs"
+  name: string;
+  color?: string;
+  title?: string;
+  size?:
+    | "2xs"
     | "xs"
     | "sm"
     | "lg"
@@ -23,18 +24,27 @@ interface IconProps {
     | "7x"
     | "8x"
     | "9x"
-    | "10x"
+    | "10x";
+  className?: string;
 }
 
-const Icon: React.FC<IconProps> = ({ name, color, title, size }) => {
-    const icons = useContext(IconContext);
-    const icon = icons[name];
+const Icon: React.FC<IconProps> = ({ name, color, title, size, className }) => {
+  const icons = useContext(IconContext);
+  const icon = icons[name];
 
-    if (!icon) {
-        throw new Error(`Icon "${name}" is not registered.`);
-    }
+  if (!icon) {
+    throw new Error(`Icon "${name}" is not registered.`);
+  }
 
-    return <FontAwesomeIcon icon={icon} color={color} title={title} size={size} />;
+  return (
+    <FontAwesomeIcon
+      icon={icon}
+      color={color}
+      title={title}
+      size={size}
+      className={className}
+    />
+  );
 };
 
 export default Icon;
