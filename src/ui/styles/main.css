@@ -72,7 +72,7 @@
   /* THE TITLE */
   --orange-yellow-crayola: hsl(0, 0%, 0%);
   /* widget color and show contact txt */
-  --orange-yellow-crayola1: hsl(204, 88%, 87%);
+  --orange-yellow-crayola1: #c1e4fb;
   /* navbar word highlight */
   --vegas-gold: hsla(214, 64%, 61%, 0.951);
   /* resume year*/
@@ -381,6 +381,51 @@ article.active {
 .h5 {
   font-size: var(--fs-7);
   font-weight: var(--fw-500);
+}
+.p-1 {
+  padding: 1em;
+}
+.p-2 {
+  padding: 2em;
+}
+.p-3 {
+  padding: 3em;
+}
+.pl-1 {
+  padding-left: 1em;
+}
+.pl-2 {
+  padding-left: 2em;
+}
+.pl-3 {
+  padding-left: 3em;
+}
+.pr-1 {
+  padding-right: 1em;
+}
+.pr-2 {
+  padding-right: 2em;
+}
+.pr-3 {
+  padding-right: 3em;
+}
+.pt-1 {
+  padding-top: 1em;
+}
+.pt-2 {
+  padding-top: 2em;
+}
+.pt-3 {
+  padding-top: 3em;
+}
+.pb-1 {
+  padding-bottom: 1em;
+}
+.pb-2 {
+  padding-bottom: 2em;
+}
+.pb-3 {
+  padding-bottom: 3em;
 }
 
 .article-title {
@@ -1547,6 +1592,70 @@ textarea.form-input::-webkit-resizer {
 
 .form-btn:disabled:hover::before {
   background: var(--bg-gradient-jet);
+}
+
+.newNavbar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  transition: transform 0.3s ease-in-out;
+  background-color: #222222;
+  padding: 5px 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.newNavbar.hide {
+  transform: translate(-50%, -150%);
+}
+
+.newNavbar.show {
+  transform: translate(-50%, 0);
+}
+
+.newNavbar-list {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.newNavbar-item:hover {
+  background-color: #333;
+  border-radius: 5px;
+}
+
+.newNavbar-item:hover svg {
+  color: hsl(45, 100%, 72%);
+}
+
+.newNavbar-item {
+  margin: 0 10px;
+}
+
+.newNavbar-link {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.newNavbar-link:hover {
+  color: #ddd;
+}
+
+.text-white {
+  color: #fff;
+}
+.text-grey {
+  color: #ccc;
+}
+
+.text-small {
+  font-size: 0.8rem;
 }
 
 /*-----------------------------------*\

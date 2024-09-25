@@ -10,6 +10,7 @@ import {
   faMapLocationDot,
   faBars,
   faArrowLeftLong,
+  faArrowRightLong,
   faChartBar,
   faSitemap,
 } from "@fortawesome/free-solid-svg-icons";
@@ -30,11 +31,13 @@ const icons: Record<string, IconDefinition> = {
   linkedin: faLinkedin,
   location: faMapLocationDot,
   menu: faBars,
+  right: faArrowRightLong,
   left: faArrowLeftLong,
   ui: faUikit,
   front: faReact,
   research: faChartBar,
   arquitecture: faSitemap,
+  sitemap: faSitemap,
 };
 
 export const IconContext = React.createContext(icons);

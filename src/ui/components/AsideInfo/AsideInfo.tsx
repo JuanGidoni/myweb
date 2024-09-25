@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Logo from "../../assets/logo.jpeg";
 import Icon from "../Icon/Icon";
+import Navbar from "../Navbar/Navbar";
 const AsideInfo = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -17,6 +18,7 @@ const AsideInfo = () => {
 
   return (
     <aside className="sidebar">
+      <Navbar />
       <div className="sidebar-info">
         <figure className="avatar-box">
           <img src={Logo} alt="Juan Ignacio Gidoni" width="80" />
@@ -25,7 +27,7 @@ const AsideInfo = () => {
           <h1 className="name" title="Juan Ignacio Gidoni">
             Juan Ignacio Gidoni
           </h1>
-          <p className="title">Software Developer</p>
+          <p className="title">Software Engineer</p>
         </div>
 
         <button className="info_more-btn" onClick={() => toggleMoreInfo()}>
@@ -39,17 +41,6 @@ const AsideInfo = () => {
         <ul className="contacts-list">
           <li className="contact-item">
             <div className="icon-box">
-              <Icon name="email" />
-            </div>
-            <div className="contact-info">
-              <p className="contact-title">Email</p>
-              <a href="mailto:juan.gidoni@gmail.com" className="contact-link">
-                contact@juani.dev
-              </a>
-            </div>
-          </li>
-          <li className="contact-item">
-            <div className="icon-box">
               <Icon name="linkedin" />
             </div>
             <div className="contact-info">
@@ -60,7 +51,7 @@ const AsideInfo = () => {
                 target="_BLANK"
                 className="contact-link"
               >
-                @ JuanGidoni
+                JuanGidoni
               </a>
             </div>
           </li>

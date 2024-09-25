@@ -17,7 +17,7 @@ export interface ListProps {
 
 const List = ({ items, className }: ListProps) => {
   return (
-    <ul className={className}>
+    <ul className={className} id="services">
       {(items?.length ?? 0) > 0 &&
         items?.map((item, index) => (
           <li key={index} className={item?.className}>

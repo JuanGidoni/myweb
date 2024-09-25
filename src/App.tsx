@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./ui/components/Navbar/Navbar";
 import MainPage from "./ui/pages/MainPage";
 import NotFoundPage from "./ui/pages/NotFoundPage";
 import AsideInfo from "./ui/components/AsideInfo/AsideInfo";
@@ -11,7 +10,6 @@ const App = () => {
       <Router>
         <AsideInfo />
         <div className="main-content">
-          <Navbar />
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/resume" element={<ResumePage />} />

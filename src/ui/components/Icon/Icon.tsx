@@ -25,9 +25,10 @@ interface IconProps {
     | "8x"
     | "9x"
     | "10x";
+  className?: string;
 }
 
-const Icon: React.FC<IconProps> = ({ name, color, title, size }) => {
+const Icon: React.FC<IconProps> = ({ name, color, title, size, className }) => {
   const icons = useContext(IconContext);
   const icon = icons[name];
 
@@ -36,7 +37,13 @@ const Icon: React.FC<IconProps> = ({ name, color, title, size }) => {
   }
 
   return (
-    <FontAwesomeIcon icon={icon} color={color} title={title} size={size} />
+    <FontAwesomeIcon
+      icon={icon}
+      color={color}
+      title={title}
+      size={size}
+      className={className}
+    />
   );
 };
 
