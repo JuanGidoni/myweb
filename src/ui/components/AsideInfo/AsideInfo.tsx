@@ -1,84 +1,94 @@
-import { useState } from 'react'
-import Logo from '../../assets/logo.jpeg'
-import Icon from '../Icon/Icon'
+import { useState } from "react";
+import Logo from "../../assets/logo.jpeg";
+import Icon from "../Icon/Icon";
+import Navbar from "../Navbar/Navbar";
 const AsideInfo = () => {
-    const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
-
-    // togle more info shoould add active to sidebar 
-    const toggleMoreInfo = () => {
-        setMenuOpen(!menuOpen)
-        const sidebar = document.querySelector('.sidebar')
-        if (menuOpen) {
-            sidebar?.classList.remove('active')
-        } else {
-            sidebar?.classList.add('active')
-        }
+  // togle more info shoould add active to sidebar
+  const toggleMoreInfo = () => {
+    setMenuOpen(!menuOpen);
+    const sidebar = document.querySelector(".sidebar");
+    if (menuOpen) {
+      sidebar?.classList.remove("active");
+    } else {
+      sidebar?.classList.add("active");
     }
+  };
 
-    return (
-        <aside className="sidebar">
-            <div className="sidebar-info">
-                <figure className="avatar-box">
-                    <img src={Logo} alt="Juan Ignacio Gidoni" width="80" />
-                </figure>
-                <div className="info-content">
-                    <h1 className="name" title="Juan Ignacio Gidoni">Juan Ignacio Gidoni</h1>
-                    <p className="title">Software Developer</p>
-                </div>
+  return (
+    <aside className="sidebar">
+      <Navbar />
+      <div className="sidebar-info">
+        <figure className="avatar-box">
+          <img src={Logo} alt="Juan Ignacio Gidoni" width="80" />
+        </figure>
+        <div className="info-content">
+          <h1 className="name" title="Juan Ignacio Gidoni">
+            Juan Ignacio Gidoni
+          </h1>
+          <p className="title">Software Engineer</p>
+        </div>
 
-                <button className="info_more-btn" onClick={() => toggleMoreInfo()}>
-                    <span><Icon name='menu' /></span>
-                </button>
+        <button className="info_more-btn" onClick={() => toggleMoreInfo()}>
+          <span>
+            <Icon name="menu" />
+          </span>
+        </button>
+      </div>
+      <div className="sidebar-info_more">
+        <div className="separator"></div>
+        <ul className="contacts-list">
+          <li className="contact-item">
+            <div className="icon-box">
+              <Icon name="linkedin" />
             </div>
-            <div className="sidebar-info_more">
-                <div className="separator"></div>
-                <ul className="contacts-list">
-                    <li className="contact-item">
-                        <div className="icon-box">
-                            <Icon name="email" />
-                        </div>
-                        <div className="contact-info">
-                            <p className="contact-title">Email</p>
-                            <a href="mailto:juan.gidoni@gmail.com" className="contact-link">contact@juani.dev</a>
-                        </div>
-                    </li>
-                    <li className="contact-item">
-                        <div className="icon-box">
-                            <Icon name="linkedin" />
-                        </div>
-                        <div className="contact-info">
-                            <p className="contact-title">LinkedIn</p>
+            <div className="contact-info">
+              <p className="contact-title">LinkedIn</p>
 
-                            <a href="https://linkedin.com/in/JuanGidoni" target='_BLANK' className="contact-link">@ JuanGidoni</a>
-                        </div>
-                    </li>
-                    <li className="contact-item">
-                        <div className="icon-box">
-                            <Icon name="location" />
-                        </div>
-                        <div className="contact-info">
-                            <p className="contact-title">Location</p>
-                            <address>Barcelona, Spain</address>
-                        </div>
-                    </li>
-                </ul>
-                <div className="separator"></div>
-                <ul className="social-list">
-                    <li className="social-item">
-                        <a href="https://www.linkedin.com/in/juangidoni/" className='contact-link' target="_blank">
-                            <Icon name="linkedin" color='grey' />
-                        </a>
-                    </li>
-                    <li className="social-item">
-                        <a href="https://github.com/juangidoni" className='contact-link' target="_blank">
-                            <Icon name="github" color='grey' />
-                        </a>
-                    </li>
-                </ul>
+              <a
+                href="https://linkedin.com/in/JuanGidoni"
+                target="_BLANK"
+                className="contact-link"
+              >
+                JuanGidoni
+              </a>
             </div>
-        </aside >
-    )
-}
+          </li>
+          <li className="contact-item">
+            <div className="icon-box">
+              <Icon name="location" />
+            </div>
+            <div className="contact-info">
+              <p className="contact-title">Location</p>
+              <address>Barcelona, Spain</address>
+            </div>
+          </li>
+        </ul>
+        <div className="separator"></div>
+        <ul className="social-list">
+          <li className="social-item">
+            <a
+              href="https://www.linkedin.com/in/juangidoni/"
+              className="contact-link"
+              target="_blank"
+            >
+              <Icon name="linkedin" color="grey" />
+            </a>
+          </li>
+          <li className="social-item">
+            <a
+              href="https://github.com/juangidoni"
+              className="contact-link"
+              target="_blank"
+            >
+              <Icon name="github" color="grey" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  );
+};
 
-export default AsideInfo
+export default AsideInfo;
