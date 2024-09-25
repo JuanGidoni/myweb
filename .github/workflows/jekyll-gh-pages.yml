@@ -30,10 +30,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Remove Node Modules
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: './node_modules'
+      - name: Remove Package Lock
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: './package-lock.json'
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20.12.1
           cache: 'npm'
       - name: Install dependencies
         run: npm install
