@@ -34,10 +34,6 @@ jobs:
         uses: JesseTG/rm@v1.0.3
         with:
           path: './node_modules'
-      - name: Remove Package Lock
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: './package-lock.json'
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
