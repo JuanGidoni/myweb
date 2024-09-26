@@ -1,23 +1,9 @@
-import { useState } from "react";
 import Logo from "../../assets/logo.jpeg";
 import Icon from "../Icon/Icon";
 import Navbar from "../Navbar/Navbar";
 const AsideInfo = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  // togle more info shoould add active to sidebar
-  const toggleMoreInfo = () => {
-    setMenuOpen(!menuOpen);
-    const sidebar = document.querySelector(".sidebar");
-    if (menuOpen) {
-      sidebar?.classList.remove("active");
-    } else {
-      sidebar?.classList.add("active");
-    }
-  };
-
   return (
-    <aside className="sidebar">
+    <aside className="sidebar active">
       <Navbar />
       <div className="sidebar-info">
         <figure className="avatar-box">
@@ -29,12 +15,6 @@ const AsideInfo = () => {
           </h1>
           <p className="title">Software Engineer</p>
         </div>
-
-        <button className="info_more-btn" onClick={() => toggleMoreInfo()}>
-          <span>
-            <Icon name="menu" />
-          </span>
-        </button>
       </div>
       <div className="sidebar-info_more">
         <div className="separator"></div>

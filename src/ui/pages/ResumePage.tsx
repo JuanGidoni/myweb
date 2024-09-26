@@ -16,8 +16,8 @@ const ResumePage = () => {
         </div>
         <ol className="timeline-list">
           <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">Ssr Frontend Developer</h4>
-            <h5 className="h5 timeline-item-title">Capgemini DCX</h5>
+            <h4 className="h4 timeline-item-title">Software Engineer</h4>
+            <h5 className="h5 timeline-item-title">Capgemini</h5>
             <span>Nov 2021 — Present</span>
             <p className="timeline-text">
               ● Collaborated on migrating a legacy React project to the latest
@@ -49,7 +49,7 @@ const ResumePage = () => {
             </p>
           </li>
           <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">Jr Frontend Developer</h4>
+            <h4 className="h4 timeline-item-title">Frontend Engineer</h4>
             <h5 className="h5 timeline-item-title">JBKnowledge</h5>
             <span>Jul 2021 — Nov 2021</span>
             <p className="timeline-text">

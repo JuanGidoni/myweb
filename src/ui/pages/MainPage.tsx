@@ -1,6 +1,5 @@
 import About from "../components/About";
 import Header from "../components/Header/Header";
-import Parragraph from "../components/Parragraph/Parragraph";
 import ServicesList from "../components/Services/Services";
 import ContentLayer from "../layers/ContentLayer";
 import ResumePage from "./ResumePage";
@@ -49,13 +48,6 @@ const MainPage = () => {
         ]}
       />
       <ResumePage />
-      <footer>
-        <Parragraph
-          className="text-grey text-small"
-          isBold
-          text={`Copyright © ${new Date().getFullYear()} - Made with ❤️ by Juan Ignacio Gidoni. All rights reserved.`}
-        />
-      </footer>
     </ContentLayer>
   );
 };
