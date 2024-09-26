@@ -3,6 +3,7 @@ import MainPage from "./ui/pages/MainPage";
 import NotFoundPage from "./ui/pages/NotFoundPage";
 import AsideInfo from "./ui/components/AsideInfo/AsideInfo";
 import ResumePage from "./ui/pages/ResumePage";
+import Footer from "./ui/components/Footer/Footer";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
             <Route path="/resume" element={<ResumePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          <Footer text="Made with ❤️ by Juan Ignacio Gidoni" />
         </div>
       </Router>
     </main>
