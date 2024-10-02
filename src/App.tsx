@@ -16,7 +16,7 @@ const App = () => {
             <Route path="/resume" element={<ResumePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-          <Footer text="Made with ❤️ by Juan Ignacio Gidoni" />
+          <Footer text="©️ 2024 - Juan Ignacio Gidoni" />
         </div>
       </Router>
     </main>
