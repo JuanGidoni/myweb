@@ -1,0 +1,67 @@
+name: Deploy Environment via Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  deploy-on-comment:
+    if: contains(github.event.comment.body, '/deploy')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check label for production deployment
+        if: contains(github.event.comment.body, '/deploy prod')
+        run: |
+          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels)
+          echo "Checking if 'deploy' label is applied..."
+          if [[ $LABELS != *"deploy"* ]]; then
+            echo "Label 'deploy' not found. Exiting."
+            exit 1
+          fi
+          echo "Label 'deploy' found. Proceeding to production deployment."
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Define environments based on the PR comment
+      - name: Define environment
+        id: env-setup
+        run: |
+          if [[ "${{ github.event.comment.body }}" == *"/deploy pre"* ]]; then
+            echo "environment=pre" >> $GITHUB_ENV
+          elif [[ "${{ github.event.comment.body }}" == *"/deploy prod"* ]]; then
+            echo "environment=production" >> $GITHUB_ENV
+          else
+            echo "Invalid environment. Exiting."
+            exit 1
+          fi
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Build the project
+      - name: Build
+        run: npm run build
+
+      # Setup Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      # Deploy based on environment
+      - name: Deploy
+        run: |
+          if [ "${{ env.environment }}" == "pre" ]; then
+            echo "Deploying to pre-environment..."
+            # Add specific deploy steps for 'pre'
+          elif [ "${{ env.environment }}" == "production" ]; then
+            echo "Deploying to production..."
+            # Add specific deploy steps for 'production'
+          fi
