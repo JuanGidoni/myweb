@@ -1,0 +1,62 @@
+# Check comments in the MR with the deploy tag and deploy the site to GitHub Pages if the comments are approved like /deploy dev or /deploy prod.
+
+name: Check comments
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for deploy command
+        id: check
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const command = /\/deploy\s+(?<env>\w+)/.exec(context.payload.comment.body);
+            return {
+              command: command ? command.groups.env : null,
+              issue_number: context.payload.issue.number,
+              repo: context.repo.repo,
+              owner: context.repo.owner,
+            }
+
+      - name: Check for approval
+        if: steps.check.outputs.command != null
+        id: approval
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: comments } = await github.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+            });
+            const approved = comments.some(comment => comment.body.includes('🚀'));
+            return { approved }
+
+      - name: Deploy
+        if: steps.approval.outputs.approved
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.payload.issue.pull_request.head.sha,
+              environment: context.payload.issue.pull_request.head.ref,
+              transient_environment: true,
+              required_contexts: [],
+            });
+            await github.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment.id,
+              state: 'success',
+              environment_url: `https://${context.repo.owner}.github.io/${context.repo.repo}/`,
+            }); 
