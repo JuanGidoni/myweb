@@ -13,6 +13,8 @@ import {
   faArrowRightLong,
   faChartBar,
   faSitemap,
+  faMoon,
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGithub,
@@ -38,6 +40,8 @@ const icons: Record<string, IconDefinition> = {
   research: faChartBar,
   arquitecture: faSitemap,
   sitemap: faSitemap,
+  moon: faMoon,
+  sun: faSun,
 };
 
 export const IconContext = React.createContext(icons);

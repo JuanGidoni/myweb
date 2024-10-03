@@ -1,11 +1,51 @@
 import Logo from "../../assets/logo.jpeg";
 import Icon from "../Icon/Icon";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../AsideNavbar/AsideNavbar";
+import { useEffect, useState } from "react";
 const AsideInfo = () => {
+  const [theme, setTheme] = useState("light");
+  const [icon, setIcon] = useState("moon");
+
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem("theme");
+    if (localTheme) {
+      setTheme(localTheme);
+      setIcon(localTheme === "light" ? "moon" : "sun");
+    }
+    document.body.classList.toggle("dark-theme", theme === "dark");
+  }, [theme]);
   return (
     <aside className="sidebar active">
       <Navbar />
       <div className="sidebar-info">
+        <div
+          className="icon-box"
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "25px",
+            height: "25px",
+            cursor: "pointer",
+            zIndex: 1,
+          }}
+          onClick={
+            theme === "light"
+              ? () => {
+                  setTheme("dark");
+                  setIcon("sun");
+                  window.localStorage.setItem("theme", "dark");
+                }
+              : () => {
+                  setTheme("light");
+                  setIcon("moon");
+                  window.localStorage.setItem("theme", "light");
+                }
+          }
+        >
+          <Icon name={icon} />
+        </div>
         <figure className="avatar-box">
           <img src={Logo} alt="Juan Ignacio Gidoni" width="80" />
         </figure>
