@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:  # Optional: allows manual triggering of the workflow
+  workflow_dispatch: # Optional: allows manual triggering of the workflow
 
 permissions:
-  contents: read     # To read repository contents
-  pages: write       # To deploy to GitHub Pages
-  id-token: write    # Required for OIDC authentication
+  contents: read # To read repository contents
+  pages: write # To deploy to GitHub Pages
+  id-token: write # Required for OIDC authentication
   pull-requests: write # Required to comment on pull requests
 
 jobs:
@@ -37,13 +37,13 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'  # Ensure this matches the location of your build output
+          path: "./dist" # Ensure this matches the location of your build output
 
       # Step 6: Find the associated pull request before deployment
       - name: Find Pull Request
         id: find_pr
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Set GH_TOKEN for GitHub CLI
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Set GH_TOKEN for GitHub CLI
         run: |
           PR_NUMBER=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
           echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
@@ -60,11 +60,9 @@ jobs:
 
       # Step 8: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
-        id: deploy  # Adding an ID to this step for later reference
-        run: |
-          # Your deploy command here, e.g., npm run deploy or actions/deploy-pages@v4
-          npm run deploy
-        continue-on-error: true  # Allow the workflow to continue even if this step fails
+        id: deploy # Adding an ID to this step for later reference
+        uses: actions/deploy-pages@v4
+        continue-on-error: true # Allow the workflow to continue even if this step fails
 
       # Step 9: Comment on PR Deployment Status
       - name: Comment on PR Deployment Status
