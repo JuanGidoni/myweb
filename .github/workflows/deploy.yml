@@ -38,33 +38,25 @@ jobs:
       # Deploy to production
       - name: Deploy to GitHub Pages (Production)
         uses: actions/deploy-pages@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: gh-pages
 
-            # Add a comment on success
-            - name: Comment on success
-              if: success()
-              uses: actions/github-script@v6
-              with:
-                script: |
-                  github.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: 'Deployment to GitHub Pages was successful!'
-                  })
-      
-            # Add a comment on failure
-            - name: Comment on failure
-              if: failure()
-              uses: actions/github-script@v6
-              with:
-                script: |
-                  github.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: 'Deployment to GitHub Pages failed.'
-                  })
+      - name: Comment on Success or Failure Deploy
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: { html_url } } = await github.repos.getPages({ owner, repo });
+            const { data: { status } } = await github.repos.getPagesBuild({ owner, repo });
+            const { data: { sha } } = await github.repos.getCommit({ owner, repo, ref: context.sha });
+            const { data: { login } } = await github.users.getByUsername({ username: context.actor });
+            const { data: { html_url: commitUrl } } = await github.repos.getCommit({ owner, repo, ref: context.sha });
+            const { data: { html_url: actionUrl } } = await github.actions.getWorkflowRun({ owner, repo, run_id: context.runId });
+            const { data: { html_url: pagesUrl } } = await github.repos.getPages({ owner, repo });
+            const { data: { html_url: pagesBuildUrl } } = await github.repos.getPagesBuild({ owner, repo });
+
+            const comment = status === 'built' ? `:rocket: Successfully deployed to [GitHub Pages](${html_url})!` : `:x: Failed to deploy to [GitHub Pages](${html_url})!`;
+            const body = `### Deploy to GitHub Pages\n\n${comment}\n\n- **Status:** ${status}\n- **Commit:** [${sha.slice(0, 7)}](${commitUrl})\n- **Author:** [${login}](${login})\n- **Workflow:** [${context.workflow}](${actionUrl})\n- **Pages:** [GitHub Pages](${pagesUrl})\n- **Pages Build:** [GitHub Pages Build](${pagesBuildUrl})`;
+            await github.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
+
+      - name: Cleanup
+        run: rm -rf dist
