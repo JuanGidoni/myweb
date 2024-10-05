@@ -9,54 +9,76 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  issues: write  # Added permissions to create comments on issues
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install dependencies
+      # Step 2: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build the project
+      # Step 3: Build the project
       - name: Build
         run: npm run build
 
-      # Setup Pages
+      # Step 4: Setup GitHub Pages configuration
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Upload artifact
+      # Step 5: Upload build artifacts for deployment
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: './dist'
 
-      # Deploy to production
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages (Production)
         uses: actions/deploy-pages@v4
 
+      # Step 7: Comment on Success or Failure of the deployment
       - name: Comment on Success or Failure Deploy
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const { data: { html_url } } = await github.repos.getPages({ owner, repo });
-            const { data: { status } } = await github.repos.getPagesBuild({ owner, repo });
-            const { data: { sha } } = await github.repos.getCommit({ owner, repo, ref: context.sha });
-            const { data: { login } } = await github.users.getByUsername({ username: context.actor });
-            const { data: { html_url: commitUrl } } = await github.repos.getCommit({ owner, repo, ref: context.sha });
-            const { data: { html_url: actionUrl } } = await github.actions.getWorkflowRun({ owner, repo, run_id: context.runId });
-            const { data: { html_url: pagesUrl } } = await github.repos.getPages({ owner, repo });
-            const { data: { html_url: pagesBuildUrl } } = await github.repos.getPagesBuild({ owner, repo });
 
-            const comment = status === 'built' ? `:rocket: Successfully deployed to [GitHub Pages](${html_url})!` : `:x: Failed to deploy to [GitHub Pages](${html_url})!`;
-            const body = `### Deploy to GitHub Pages\n\n${comment}\n\n- **Status:** ${status}\n- **Commit:** [${sha.slice(0, 7)}](${commitUrl})\n- **Author:** [${login}](${login})\n- **Workflow:** [${context.workflow}](${actionUrl})\n- **Pages:** [GitHub Pages](${pagesUrl})\n- **Pages Build:** [GitHub Pages Build](${pagesBuildUrl})`;
-            await github.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
+            // Get GitHub Pages information
+            const pages = await github.repos.getPages({ owner, repo });
 
+            // Check if GitHub Pages is configured
+            if (!pages || !pages.data || !pages.data.html_url) {
+              throw new Error("GitHub Pages is not configured or has not been deployed yet.");
+            }
+
+            const status = pages.data.status || 'unknown';
+            const sha = context.sha;
+            const login = context.actor;
+            const commitUrl = `https://github.com/${owner}/${repo}/commit/${sha}`;
+            const actionUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
+
+            // Generate the comment based on the deployment status
+            const comment = status === 'built'
+              ? `:rocket: Successfully deployed to [GitHub Pages](${pages.data.html_url})!`
+              : `:x: Failed to deploy to [GitHub Pages](${pages.data.html_url})!`;
+
+            // Create a body for the issue comment
+            const body = `### Deploy to GitHub Pages\n\n${comment}\n\n- **Status:** ${status}\n- **Commit:** [${sha.slice(0, 7)}](${commitUrl})\n- **Author:** [${login}](https://github.com/${login})\n- **Workflow:** [View Workflow](${actionUrl})`;
+
+            // Create the comment on the issue or PR
+            await github.issues.createComment({
+              owner,
+              repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      # Step 8: Cleanup build artifacts
       - name: Cleanup
         run: rm -rf dist
