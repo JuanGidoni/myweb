@@ -19,17 +19,7 @@ const AsideInfo = () => {
       <Navbar />
       <div className="sidebar-info">
         <div
-          className="icon-box"
-          style={{
-            position: "absolute",
-            top: "0",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "25px",
-            height: "25px",
-            cursor: "pointer",
-            zIndex: 1,
-          }}
+          className="icon-box-toggle-theme icon-box"
           onClick={
             theme === "light"
               ? () => {

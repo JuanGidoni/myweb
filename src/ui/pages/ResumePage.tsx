@@ -2,11 +2,17 @@
 
 import Header from "../components/Header/Header";
 import Icon from "../components/Icon/Icon";
+import Timeline from "../components/Timeline/Timeline";
 
 const ResumePage = () => {
   return (
     <>
-      <Header type="H2" title="Resume" className="h2 article-title" id="resume" />
+      <Header
+        type="H2"
+        title="Resume"
+        className="h2 article-title"
+        id="resume"
+      />
       <section className="timeline">
         <div className="title-wrapper">
           <div className="icon-box">
@@ -164,66 +170,120 @@ const ResumePage = () => {
           </div>
           <h3 className="h3">Certifications</h3>
         </div>
-        <ol className="timeline-list">
-          <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">
-              Flutter & Dart Complete Guide
-            </h4>
-            <span>2024 at Udemy</span>
-            <ul className="timeline-text-class contact-info">
-              <li>
-                <a
-                  className="contact-link disabled"
-                  // href="https://www.coursera.org/account/accomplishments/specialization/certificate/JH49YNFJRFNH"
-                  target="_blank"
-                >
-                  In progress
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">MERN Fullstack</h4>
-            <span>2024 at Udemy</span>
-            <ul className="timeline-text-class contact-info">
-              <li>
-                <a
-                  className="contact-link disabled"
-                  // href="https://www.coursera.org/account/accomplishments/specialization/certificate/JH49YNFJRFNH"
-                  target="_blank"
-                >
-                  In progress
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">
-              React The Complete Guide 2024
-            </h4>
-            <span>2024 at Udemy</span>
-            <ul className="timeline-text-class contact-info">
-              <li>
-                <a
-                  className="contact-link disabled"
-                  // href="https://www.coursera.org/account/accomplishments/specialization/certificate/JH49YNFJRFNH"
-                  target="_blank"
-                >
-                  In progress
-                </a>
-              </li>
-            </ul>
-          </li>
-          <a
-            className="contact-link"
-            href="https://www.linkedin.com/in/juangidoni/details/certifications/"
-            target="_blank"
-          >
-            <h4 className="h4 timeline-item-title ">
-              View more certifications at LinkedIn
-            </h4>
-          </a>
-        </ol>
+        <Timeline
+          items={[
+            {
+              title: "Google Cloud Certified Professional Cloud Architect",
+              date: "2024 at Google",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title:
+                "Blockchain A-Z: Build a Blockchain, a Crypto + ChatGPT Prize",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Build a Blockchain & Cryptocurrency | Full-Stack Edition",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Ethereum and Solidity: The Complete Developer's Guide",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Flutter & Dart - The Complete Guide [2024 Edition]",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Flutter & Dart: SOLID Principles and Top Design Patterns",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Flutter Advanced: Bring your knowledge to next level",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Flutter Advanced: Pattern Designs and Animations",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Flutter móvil: Recursos Nativos - Nivel intermedio",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "GitLab CI/CD: Pipelines, CI/CD and DevOps for Beginners",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "MERN Full Stack: MongoDB, Express, React y Node",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title:
+                "NestJS Zero to Hero - Modern TypeScript Back-end Development",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "NestJS: The Complete Developer's Guide",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "Python for Data Science and Machine Learning Bootcamp",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "React - The Complete Guide 2024 (incl. Next.js, Redux)",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "SQL and PostgreSQL: The Complete Developer's Guide",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "The Complete SQL Bootcamp: Go from Zero to Hero",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+            {
+              title: "TypeScript: Complete Guide",
+              date: "2024 at Udemy",
+              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
+              status: "In progress",
+            },
+          ]}
+        />
       </section>
     </>
   );
