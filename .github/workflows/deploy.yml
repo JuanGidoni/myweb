@@ -39,12 +39,7 @@ jobs:
         with:
           path: './dist'  # Ensure this matches the location of your build output
 
-      # Step 6: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deploy  # Adding an ID to this step for later reference
-        uses: actions/deploy-pages@v4
-
-      # Step 7: Identify the associated pull request
+      # Step 6: Find the associated pull request before deployment
       - name: Find Pull Request
         id: find_pr
         env:
@@ -53,7 +48,7 @@ jobs:
           PR_NUMBER=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
           echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
 
-      # Step 8: Add PR Comment
+      # Step 7: Add initial PR comment about deployment progress
       - name: Add PR Comment
         if: env.pr_number != ''
         uses: mshick/add-pr-comment@v2.8.2
@@ -63,15 +58,22 @@ jobs:
           issue: ${{ env.pr_number }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 9: Comment on the PR deployment status
+      # Step 8: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deploy  # Adding an ID to this step for later reference
+        run: |
+          # Your deploy command here, e.g., npm run deploy or actions/deploy-pages@v4
+          npm run deploy
+        continue-on-error: true  # Allow the workflow to continue even if this step fails
+
+      # Step 9: Comment on PR Deployment Status
       - name: Comment on PR Deployment Status
         if: env.pr_number != ''
         run: |
-          STATUS="${{ job.status }}"
-          if [[ "$STATUS" == "success" ]]; then
-            COMMENT_MESSAGE=":rocket: Successfully deployed to GitHub Pages!"
+          if [ "${{ steps.deploy.outcome }}" == "success" ]; then
+            COMMENT_MESSAGE=":rocket: Successfully deployed to GitHub Pages!";
           else
-            COMMENT_MESSAGE=":x: Failed to deploy to GitHub Pages."
+            COMMENT_MESSAGE=":x: Failed to deploy to GitHub Pages.";
           fi
 
           curl -X POST \
@@ -80,6 +82,6 @@ jobs:
             -d "{\"body\":\"$COMMENT_MESSAGE\"}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.pr_number }}/comments"
 
-      # Step 10: Clean up the artifacts
+      # Step 10: Cleanup the artifacts
       - name: Cleanup
         run: rm -rf dist
