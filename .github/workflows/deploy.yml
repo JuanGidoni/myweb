@@ -1,19 +1,20 @@
-name: Deploy to Production on Master Push
+name: Deploy to GitHub Pages
 
+# Trigger the workflow on every push to the master branch
 on:
   push:
     branches:
       - master
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-  issues: write  # Added permissions to create comments on issues
+  contents: read # To read repository contents
+  pages: write # To deploy to GitHub Pages
+  id-token: write # Required for OIDC authentication
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
@@ -24,24 +25,24 @@ jobs:
         run: npm install
 
       # Step 3: Build the project
-      - name: Build
+      - name: Build the project
         run: npm run build
 
-      # Step 4: Setup GitHub Pages configuration
+      # Step 4: Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Step 5: Upload build artifacts for deployment
-      - name: Upload artifact
+      # Step 5: Upload build artifacts to GitHub Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: "./dist" # Ensure this matches the location of your build output
 
       # Step 6: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages (Production)
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-      # Step 7: Comment on Success or Failure of the deployment
+      # Step 7: Optional - Comment on the success or failure of the deployment
       - name: Comment on Success or Failure Deploy
         uses: actions/github-script@v3
         with:
@@ -49,29 +50,34 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
 
-            // Get GitHub Pages information
-            const pages = await github.repos.getPages({ owner, repo });
-
-            // Check if GitHub Pages is configured
-            if (!pages || !pages.data || !pages.data.html_url) {
-              throw new Error("GitHub Pages is not configured or has not been deployed yet.");
+            // Try to get GitHub Pages information (handle potential errors gracefully)
+            let pages;
+            try {
+              pages = await github.repos.getPages({ owner, repo });
+            } catch (error) {
+              console.log("Failed to retrieve Pages information. It may not be deployed yet.");
+              pages = null;
             }
 
-            const status = pages.data.status || 'unknown';
+            const pagesUrl = pages && pages.data.html_url ? pages.data.html_url : null;
+            const status = pages && pages.data.status ? pages.data.status : 'unknown';
             const sha = context.sha;
             const login = context.actor;
             const commitUrl = `https://github.com/${owner}/${repo}/commit/${sha}`;
             const actionUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
 
             // Generate the comment based on the deployment status
-            const comment = status === 'built'
-              ? `:rocket: Successfully deployed to [GitHub Pages](${pages.data.html_url})!`
-              : `:x: Failed to deploy to [GitHub Pages](${pages.data.html_url})!`;
+            let comment = ":x: Failed to deploy to GitHub Pages.";
+            if (pagesUrl) {
+              comment = status === 'built'
+                ? `:rocket: Successfully deployed to [GitHub Pages](${pagesUrl})!`
+                : `:x: Failed to deploy to [GitHub Pages](${pagesUrl})!`;
+            }
 
-            // Create a body for the issue comment
+            // Create a body for the comment
             const body = `### Deploy to GitHub Pages\n\n${comment}\n\n- **Status:** ${status}\n- **Commit:** [${sha.slice(0, 7)}](${commitUrl})\n- **Author:** [${login}](https://github.com/${login})\n- **Workflow:** [View Workflow](${actionUrl})`;
 
-            // Create the comment on the issue or PR
+            // Post the comment
             await github.issues.createComment({
               owner,
               repo,
@@ -79,6 +85,6 @@ jobs:
               body
             });
 
-      # Step 8: Cleanup build artifacts
+      # Step 8: Clean up the artifacts
       - name: Cleanup
         run: rm -rf dist
