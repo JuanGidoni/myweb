@@ -6,9 +6,10 @@ on:
       - master
 
 permissions:
-  contents: read   # To read repository contents
-  pages: write     # To deploy to GitHub Pages
-  id-token: write  # Required for OIDC authentication
+  contents: read     # To read repository contents
+  pages: write       # To deploy to GitHub Pages
+  id-token: write    # Required for OIDC authentication
+  pull-requests: write # Required to comment on pull requests
 
 jobs:
   deploy:
@@ -39,25 +40,43 @@ jobs:
 
       # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
+        id: deploy  # Adding an ID to this step for later reference
         uses: actions/deploy-pages@v4
 
-      # Step 7: Add PR Comment using mshick/add-pr-comment@v2.8.2
+      # Step 7: Identify the associated pull request
+      - name: Find Pull Request
+        id: find_pr
+        run: |
+          PR_NUMBER=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+
+      # Step 8: Add PR Comment
       - name: Add PR Comment
-        if: success() || failure()  # Add comment whether the job succeeds or fails
+        if: env.pr_number != ''
         uses: mshick/add-pr-comment@v2.8.2
         with:
+          message: |
+            :hourglass_flowing_sand: Deployment is currently in progress...
+          issue: ${{ env.pr_number }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message-success: |
-            :rocket: Successfully deployed to GitHub Pages!
-            - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            - **Workflow Run**: [View here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          message-failure: |
-            :x: Failed to deploy to GitHub Pages.
-            - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            - **Workflow Run**: [View here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 8: Clean up the artifacts
+      # Step 9: Comment on the PR based on success or failure
+      - name: Comment on PR Deployment Status
+        if: env.pr_number != ''
+        run: |
+          STATUS="${{ job.status }}"
+          if [[ "$STATUS" == "success" ]]; then
+            COMMENT_MESSAGE=":rocket: Successfully deployed to GitHub Pages!"
+          else
+            COMMENT_MESSAGE=":x: Failed to deploy to GitHub Pages."
+          fi
+
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"body\":\"$COMMENT_MESSAGE\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.pr_number }}/comments"
+
+      # Step 10: Clean up the artifacts
       - name: Cleanup
         run: rm -rf dist
