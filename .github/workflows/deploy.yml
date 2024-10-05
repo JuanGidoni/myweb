@@ -7,9 +7,9 @@ on:
       - master
 
 permissions:
-  contents: read # To read repository contents
-  pages: write # To deploy to GitHub Pages
-  id-token: write # Required for OIDC authentication
+  contents: read   # To read repository contents
+  pages: write     # To deploy to GitHub Pages
+  id-token: write  # Required for OIDC authentication
 
 jobs:
   deploy:
@@ -36,54 +36,24 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist" # Ensure this matches the location of your build output
+          path: './dist'  # Ensure this matches the location of your build output
 
       # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-      # Step 7: Optional - Comment on the success or failure of the deployment
-      - name: Comment on Success or Failure Deploy
-        uses: actions/github-script@v3
+      # Step 7: Comment on Success or Failure Deploy using mshick/add-pr-comment@v2.8.2
+      - name: Add PR Comment
+        if: success() || failure()  # Add comment whether the job succeeds or fails
+        uses: mshick/add-pr-comment@v2.8.2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo } = context.repo;
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            Deployment status: ${{ job.status }}
 
-            // Try to get GitHub Pages information (handle potential errors gracefully)
-            let pages;
-            try {
-              pages = await github.repos.getPages({ owner, repo });
-            } catch (error) {
-              console.log("Failed to retrieve Pages information. It may not be deployed yet.");
-              pages = null;
-            }
-
-            const pagesUrl = pages && pages.data.html_url ? pages.data.html_url : null;
-            const status = pages && pages.data.status ? pages.data.status : 'unknown';
-            const sha = context.sha;
-            const login = context.actor;
-            const commitUrl = `https://github.com/${owner}/${repo}/commit/${sha}`;
-            const actionUrl = `https://github.com/${owner}/${repo}/actions/runs/${context.runId}`;
-
-            // Generate the comment based on the deployment status
-            let comment = ":x: Failed to deploy to GitHub Pages.";
-            if (pagesUrl) {
-              comment = status === 'built'
-                ? `:rocket: Successfully deployed to [GitHub Pages](${pagesUrl})!`
-                : `:x: Failed to deploy to [GitHub Pages](${pagesUrl})!`;
-            }
-
-            // Create a body for the comment
-            const body = `### Deploy to GitHub Pages\n\n${comment}\n\n- **Status:** ${status}\n- **Commit:** [${sha.slice(0, 7)}](${commitUrl})\n- **Author:** [${login}](https://github.com/${login})\n- **Workflow:** [View Workflow](${actionUrl})`;
-
-            // Post the comment
-            await github.issues.createComment({
-              owner,
-              repo,
-              issue_number: context.issue.number,
-              body
-            });
+            - **Branch**: ${{ github.ref }}
+            - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            - **Workflow Run**: [View here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
       # Step 8: Clean up the artifacts
       - name: Cleanup
