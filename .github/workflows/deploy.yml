@@ -1,8 +1,9 @@
-name: Deploy Environment via Comment
+name: Deploy to Production on Master Push
 
 on:
-  issue_comment:
-    types: [created]
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read
@@ -10,68 +11,15 @@ permissions:
   id-token: write
 
 jobs:
-  deploy-on-comment:
-    if: contains(github.event.comment.body, '/deploy')
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Define environments based on the PR comment
-      - name: Define environment
-        id: env-setup
-        run: |
-          if [[ "${{ github.event.comment.body }}" == *"/deploy pre"* ]]; then
-            echo "environment=pre" >> $GITHUB_ENV
-            echo "pre" >> $GITHUB_ENV
-          elif [[ "${{ github.event.comment.body }}" == *"/deploy prod"* ]]; then
-            echo "environment=production" >> $GITHUB_ENV
-            echo "prod" >> $GITHUB_ENV
-          else
-            echo "Invalid environment. Exiting."
-            exit 1
-          fi
-
-      # Check label for production deployment
-      - name: Check label for production deployment
-        id: check-label
-        if: env.environment == 'prod'
-        run: |
-          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels)
-          echo "Checking if 'deploy' label is applied..."
-          if [[ $LABELS != *"deploy"* ]]; then
-            echo "Label 'deploy' not found. Exiting."
-            echo "false" >> $GITHUB_ENV
-            exit 1
-          fi
-          echo "Label 'deploy' found. Proceeding to production deployment."
-          echo "true" >> $GITHUB_ENV
-
-      # Send status message
-      - name: Send status message
-        run: |
-          if [[ "${{ env.environment }}" == "production" && "${{ env.false }}" == "false" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to production will proceed as the required label is present."}'
-          elif [[ "${{ env.environment }}" == "production" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to production was not executed because the required label is missing."}'
-            exit 1
-          elif [[ "${{ env.environment }}" == "pre" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to pre-environment will proceed."}'
-          fi
-
       # Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
       # Build the project
       - name: Build
@@ -87,13 +35,36 @@ jobs:
         with:
           path: "./dist"
 
-      # Deploy based on environment
-      - name: Deploy
-        run: |
-          if [ "${{ env.environment }}" == "pre" ]; then
-            echo "Deploying to pre-environment..."
-            # Add specific deploy steps for 'pre'
-          elif [ "${{ env.environment }}" == "production" ]; then
-            echo "Deploying to production..."
-            # Add specific deploy steps for 'production'
-          fi
+      # Deploy to production
+      - name: Deploy to GitHub Pages (Production)
+        uses: actions/deploy-pages@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: gh-pages
+
+            # Add a comment on success
+            - name: Comment on success
+              if: success()
+              uses: actions/github-script@v6
+              with:
+                script: |
+                  github.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: 'Deployment to GitHub Pages was successful!'
+                  })
+      
+            # Add a comment on failure
+            - name: Comment on failure
+              if: failure()
+              uses: actions/github-script@v6
+              with:
+                script: |
+                  github.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: 'Deployment to GitHub Pages failed.'
+                  })
