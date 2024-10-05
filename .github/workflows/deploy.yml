@@ -1,6 +1,5 @@
 name: Deploy to GitHub Pages
 
-# Trigger the workflow on every push to the master branch
 on:
   push:
     branches:
@@ -42,18 +41,22 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
 
-      # Step 7: Comment on Success or Failure Deploy using mshick/add-pr-comment@v2.8.2
+      # Step 7: Add PR Comment using mshick/add-pr-comment@v2.8.2
       - name: Add PR Comment
         if: success() || failure()  # Add comment whether the job succeeds or fails
         uses: mshick/add-pr-comment@v2.8.2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            Deployment status: ${{ job.status }}
-
-            - **Branch**: ${{ github.ref }}
+          message-success: |
+            :rocket: Successfully deployed to GitHub Pages!
             - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
             - **Workflow Run**: [View here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          message-failure: |
+            :x: Failed to deploy to GitHub Pages.
+            - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            - **Workflow Run**: [View here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 8: Clean up the artifacts
       - name: Cleanup
