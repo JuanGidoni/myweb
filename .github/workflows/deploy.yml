@@ -1,99 +1,85 @@
-name: Deploy Environment via Comment
+name: Deploy to GitHub Pages
 
 on:
-  issue_comment:
-    types: [created]
+  push:
+    branches:
+      - master
+  workflow_dispatch: # Optional: allows manual triggering of the workflow
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read # To read repository contents
+  pages: write # To deploy to GitHub Pages
+  id-token: write # Required for OIDC authentication
+  pull-requests: write # Required to comment on pull requests
 
 jobs:
-  deploy-on-comment:
-    if: contains(github.event.comment.body, '/deploy')
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Define environments based on the PR comment
-      - name: Define environment
-        id: env-setup
-        run: |
-          if [[ "${{ github.event.comment.body }}" == *"/deploy pre"* ]]; then
-            echo "environment=pre" >> $GITHUB_ENV
-            echo "pre" >> $GITHUB_ENV
-          elif [[ "${{ github.event.comment.body }}" == *"/deploy prod"* ]]; then
-            echo "environment=production" >> $GITHUB_ENV
-            echo "prod" >> $GITHUB_ENV
-          else
-            echo "Invalid environment. Exiting."
-            exit 1
-          fi
-
-      # Check label for production deployment
-      - name: Check label for production deployment
-        id: check-label
-        if: env.environment == 'prod'
-        run: |
-          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels)
-          echo "Checking if 'deploy' label is applied..."
-          if [[ $LABELS != *"deploy"* ]]; then
-            echo "Label 'deploy' not found. Exiting."
-            echo "false" >> $GITHUB_ENV
-            exit 1
-          fi
-          echo "Label 'deploy' found. Proceeding to production deployment."
-          echo "true" >> $GITHUB_ENV
-
-      # Send status message
-      - name: Send status message
-        run: |
-          if [[ "${{ env.environment }}" == "production" && "${{ env.false }}" == "false" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to production will proceed as the required label is present."}'
-          elif [[ "${{ env.environment }}" == "production" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to production was not executed because the required label is missing."}'
-            exit 1
-          elif [[ "${{ env.environment }}" == "pre" ]]; then
-            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-              -d '{"body": "Deployment to pre-environment will proceed."}'
-          fi
-
-      # Install dependencies
+      # Step 2: Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
-      # Build the project
-      - name: Build
+      # Step 3: Build the project
+      - name: Build the project
         run: npm run build
 
-      # Setup Pages
+      # Step 4: Setup GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Upload artifact
-      - name: Upload artifact
+      # Step 5: Upload build artifacts to GitHub Pages
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: "./dist" # Ensure this matches the location of your build output
 
-      # Deploy based on environment
-      - name: Deploy
+      # Step 6: Find the associated pull request before deployment
+      - name: Find Pull Request
+        id: find_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Set GH_TOKEN for GitHub CLI
         run: |
-          if [ "${{ env.environment }}" == "pre" ]; then
-            echo "Deploying to pre-environment..."
-            # Add specific deploy steps for 'pre'
-          elif [ "${{ env.environment }}" == "production" ]; then
-            echo "Deploying to production..."
-            # Add specific deploy steps for 'production'
+          PR_NUMBER=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+
+      # Step 7: Add initial PR comment about deployment progress
+      - name: Add PR Comment
+        if: env.pr_number != ''
+        uses: mshick/add-pr-comment@v2.8.2
+        with:
+          message: |
+            :hourglass_flowing_sand: Deployment is currently in progress...
+          issue: ${{ env.pr_number }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 8: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deploy # Adding an ID to this step for later reference
+        uses: actions/deploy-pages@v4
+        continue-on-error: true # Allow the workflow to continue even if this step fails
+
+      # Step 9: Comment on PR Deployment Status
+      - name: Comment on PR Deployment Status
+        if: env.pr_number != ''
+        run: |
+          if [ "${{ steps.deploy.outcome }}" == "success" ]; then
+            COMMENT_MESSAGE=":rocket: Successfully deployed to GitHub Pages!";
+          else
+            COMMENT_MESSAGE=":x: Failed to deploy to GitHub Pages.";
           fi
+
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"body\":\"$COMMENT_MESSAGE\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ env.pr_number }}/comments"
+
+      # Step 10: Cleanup the artifacts
+      - name: Cleanup
+        run: rm -rf dist
