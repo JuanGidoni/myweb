@@ -4,11 +4,13 @@ import NotFoundPage from "./ui/pages/NotFoundPage";
 import AsideInfo from "./ui/components/AsideInfo/AsideInfo";
 import ResumePage from "./ui/pages/ResumePage";
 import Footer from "./ui/components/Footer/Footer";
+import BackToTop from "./ui/components/BackToTop/BackToTop";
 
 const App = () => {
   return (
     <main>
       <Router>
+        <BackToTop />
         <AsideInfo />
         <div className="main-content">
           <Routes>

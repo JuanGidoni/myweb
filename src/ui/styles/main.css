@@ -84,11 +84,11 @@
   /* resume year*/
   --light-gray: hsl(0, 4%, 17%);
   /* general and navbar text*/
-  --gray-tone: hsla(240, 2%, 44%, 0.866);
+  --gray-tone: hsla(0, 0%, 100%, 0.866);
   /* navbar bg */
   --light-gray-70: hsla(219, 46%, 59%, 0.951);
   /* TITLES in show contact */
-  --gray-tone: hsla(225, 2%, 44%, 0.866);
+  --gray-tone: hsla(0, 0%, 100%, 0.866);
   /* navbar bg */
   --light-gray-70: hsla(219, 46%, 59%, 0.951);
   /* TITLES in show contact */
@@ -288,6 +288,13 @@ html {
 
 body {
   background: var(--smoky-black);
+}
+
+.bg-transparent {
+  background: none;
+}
+.border-none {
+  border: none;
 }
 
 /*-----------------------------------*\
@@ -693,12 +700,15 @@ main {
   left: 0;
   width: 100%;
   background: var(--gray-tone);
-  background: var(--gray-tone);
   backdrop-filter: blur(10px);
   border: 1px solid var(--jet);
   border-radius: 12px 12px 0 0;
   box-shadow: var(--shadow-2);
   z-index: 5;
+}
+
+.navbar:hover .navbar-link svg {
+  color: var(--orange-yellow-crayola1);
 }
 
 .navbar-list {
@@ -723,8 +733,9 @@ main {
 }
 
 .navbar-link svg {
-  color: var(--white-1);
+  color: var(--white-2);
   font-size: var(--fs-8);
+  width: 100%;
   font-size: 1.5em;
   transition: color var(--transition-1);
 }
@@ -1594,6 +1605,10 @@ textarea.form-input::-webkit-resizer {
   background: var(--bg-gradient-jet);
 }
 
+.bg-transparent {
+  background: transparent;
+}
+
 .newNavbar {
   position: absolute;
   top: 0;
@@ -1601,10 +1616,8 @@ textarea.form-input::-webkit-resizer {
   transform: translateX(-50%);
   width: auto;
   transition: transform 0.3s ease-in-out;
-  background-color: #222222;
   padding: 5px 10px;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
 
@@ -1623,13 +1636,13 @@ textarea.form-input::-webkit-resizer {
   margin: 0;
   padding: 0;
 }
-.newNavbar-item:hover {
-  background-color: #333;
-  border-radius: 5px;
+
+.newNavbar-item svg {
+  color: var(--light-gray-70);
 }
 
 .newNavbar-item:hover svg {
-  color: hsl(45, 100%, 72%);
+  color: var(--eerie-black-1);
 }
 
 .newNavbar-item {
@@ -1637,14 +1650,14 @@ textarea.form-input::-webkit-resizer {
 }
 
 .newNavbar-link {
-  color: #fff;
+  color: var(--light-gray-70);
   text-decoration: none;
   transition: color 0.3s ease-in-out;
   cursor: pointer;
 }
 
 .newNavbar-link:hover {
-  color: #ddd;
+  color: var(--light-gray-70);
 }
 
 .text-white {
@@ -1914,29 +1927,10 @@ textarea.form-input::-webkit-resizer {
     max-width: calc(100% - 64px);
     width: calc(100% - 64px);
   }
-
-  /**
-     * #NAVBAR
-     */
-
   .navbar {
-    border-radius: 20px 20px 0 0;
+    background-color: transparent;
+    padding: 1em;
   }
-
-  .navbar-list {
-    gap: 20px;
-  }
-
-  .navbar-link {
-    padding: 10px 20px;
-    --fs-8: 14px;
-  }
-
-  .navbar-link svg {
-    padding-left: 0.5em;
-    font-size: 1em;
-  }
-
   /**
      * #ABOUT
      */
@@ -2135,6 +2129,25 @@ textarea.form-input::-webkit-resizer {
   }
 }
 
+.d-block {
+  display: block;
+}
+
+.d-none {
+  display: none;
+}
+
+.icon-box-toggle-theme {
+  margin-top: 10px;
+  position: fixed;
+  top: 5%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  z-index: 1;
+}
 /**
    * responsive larger than 768px screen
    */
@@ -2143,7 +2156,17 @@ textarea.form-input::-webkit-resizer {
   /**
      * REUSED STYLE
      */
-
+  .icon-box-toggle-theme {
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1;
+  }
   .sidebar,
   article {
     width: 700px;
@@ -2342,9 +2365,6 @@ textarea.form-input::-webkit-resizer {
     left: auto;
     right: 0;
     width: max-content;
-    border-radius: 0 20px;
-    padding: 0 20px;
-    box-shadow: none;
   }
 
   .navbar-list {
@@ -2576,4 +2596,54 @@ textarea.form-input::-webkit-resizer {
     width: 15px;
     border-radius: 6px;
   }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--bg-gradient-jet);
+  color: var(--light-gray);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  z-index: 1000;
+  box-shadow: var(--shadow-1);
+  transition: var(--transition-1);
+}
+
+.fixed {
+  z-index: 1000;
+  position: fixed;
+}
+
+.bottom {
+  bottom: 0;
+}
+
+.top {
+  top: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+.fade {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+.fadeOut {
+  opacity: 0;
 }

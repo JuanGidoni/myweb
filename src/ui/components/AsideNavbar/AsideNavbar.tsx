@@ -1,7 +1,7 @@
 import React from "react";
 import Icon from "../Icon/Icon";
 
-const Navbar = () => {
+const AsideNavbar = () => {
   const handleClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     sectionId: string
@@ -52,4 +52,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AsideNavbar;
