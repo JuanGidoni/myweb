@@ -1,0 +1,45 @@
+# Add labels to pull requests into develop with the label "fix" if the branch starts with fix- or "feature" if the branch starts with feature- or "hotfix" if the branch starts with hotfix-. or "release" if the branch starts with release-.
+# Also add the label "WIP" if the pull request title starts with "WIP".
+
+name: Add labels
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  add_labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add labels
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const labels = [];
+            const prTitle = context.payload.pull_request.title;
+            const branchName = context.payload.pull_request.head.ref;
+            if (prTitle.startsWith('WIP')) {
+              labels.push('WIP');
+            }
+            if (branchName.startsWith('fix-')) {
+              labels.push('fix');
+            } else if (branchName.startsWith('feature-')) {
+              labels.push('feature');
+            } else if (branchName.startsWith('hotfix-')) {
+              labels.push('hotfix');
+            } else if (branchName.startsWith('release-')) {
+              labels.push('release');
+            }
+            await github.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: labels
+            });
+            

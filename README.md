@@ -31,77 +31,105 @@ The project is organized as follows:
 
 ## Version History
 
+### Version 0.1.18
+
+- **New Feature**: Added progress bar into certifications. Created WorkExperiences component
+- **Minor fix**: Fixed an issue with the sun/moon icon
+
 ### Version 0.1.17
+
 - **Bug Fixes**: Fixed errors with build at deployment, changed deploy action.
 
 ### Version 0.1.16
+
 - **New Feature**: Added base check in merge requests from the Github actions to prevent any branch into master (only develop into master allowed for deployments).
 
 ### Version 0.1.15
+
 - **Performance Improvements**: Optimized loading times and reduced bundle size.
 
 ### Version 0.1.14
+
 - **New Feature**: Added dark mode only.
 
 ### Version 0.1.13
+
 - **Bug Fixes**: Fixed issues with responsive design on mobile devices.
 
 ### Version 0.1.12
+
 - **Enhancements**: Improved accessibility features.
 
 ### Version 0.1.11
+
 - **New Component**: Added a new footer component.
 
 ### Version 0.1.10
+
 - **Refactoring**: Refactored codebase for better maintainability.
 
 ### Version 0.1.9
+
 - **Bug Fixes**: Fixed issues with github actions.
 
 ### Version 0.1.8
+
 - **Bug Fixes**: Fixed issues with older versions in the builds before deploy.
 
 ### Version 0.1.7
+
 - **Enhancements**: Improved SEO features.
 
 ### Version 0.1.6
+
 - **New Component**: Added new components.
 
 ### Version 0.1.5
+
 - **Bug Fixes**: Fixed issues with navigation.
 
 ### Version 0.1.4
+
 - **New Feature**: Added About Me section.
 
 ### Version 0.1.3
+
 - **Enhancements**: Improved UI/UX design.
 
 ### Version 0.1.2
+
 - **New Component**: Added a new card component.
 
 ### Version 0.1.1
+
 - **Bug Fixes**: Fixed issues with CSS styling.
 
 ### Version 0.1.0
+
 - **New Feature**: Added a new container page.
 
 ### Version 0.0.4
+
 - **Initial Structure Deployed**: Core structure and basic setup.
 
 ### Version 0.0.3
+
 - **Added Components and Examples**: Introduced some UI components and examples.
 
 ### Version 0.0.2
+
 - **Basic Button Added**: Added a basic button component.
 - **Readme and Indexes**: Added README files and indexes to each folder.
 - **Fixes**: Fixed space at the end of the file and readme import route.
 
 ### Version 0.0.1
+
 - **POC Portfolio and Folder Structure**: Proof of concept for portfolio and folder structure.
 - **Deploys with GitHub Pages**: Added deployment with GitHub Pages.
 - **Fixes**: Fixed CSS variables, issues, and Vite build configuration.
 
 ### Version 0.0.0
+
 - **Initial Setup**: Added core structure and initial setup.
 
 ## Preview
