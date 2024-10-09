@@ -1,0 +1,65 @@
+# Action to add labels to pull requests based on the branch name and title
+# Labels are added based on the following rules:
+# - If the title starts with 'WIP', add the 'WIP' label
+# - If the branch starts with 'fix-', add the 'fix' label
+# - If the branch starts with 'feature-', add the 'feature' label
+# - If the branch starts with 'hotfix-', add the 'hotfix' label
+# - If the branch starts with 'release-', add the 'release' label
+# - If the branch is 'master', add the 'deploy' label
+# - If the branch is 'develop', add the 'develop' label
+# - If the title includes 'sync', add the 'sync' label
+
+name: Add labels
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  add_labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add labels
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const labels = [];
+            const title = github.context.payload.pull_request.title;
+            const branch = github.context.payload.pull_request.head.ref;
+
+            if (title.startsWith('WIP')) {
+              labels.push('WIP');
+            }
+
+            if (branch.startsWith('fix-')) {
+              labels.push('fix');
+            } else if (branch.startsWith('feature-')) {
+              labels.push('feature');
+            } else if (branch.startsWith('hotfix-')) {
+              labels.push('hotfix');
+            } else if (branch.startsWith('release-')) {
+              labels.push('release');
+            }
+
+            if (branch === 'master') {
+              labels.push('deploy');
+            } else if (branch === 'develop') {
+              labels.push('develop');
+            }
+
+            if (title.includes('sync')) {
+              labels.push('sync');
+            }
+
+            await github.issues.addLabels({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              issue_number: github.context.payload.pull_request.number,
+              labels: labels
+            });
