@@ -5,6 +5,13 @@ import Icon from "../components/Icon/Icon";
 import Timeline from "../components/Timeline/Timeline";
 
 const ResumePage = () => {
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   return (
     <>
       <Header
@@ -170,119 +177,75 @@ const ResumePage = () => {
           </div>
           <h3 className="h3">Certifications</h3>
         </div>
+
         <Timeline
           items={[
             {
-              title: "Google Cloud Certified Professional Cloud Architect",
-              date: "2024 at Google",
+              title: "Meta Frontend Developer",
+              date: formatDate("2023-11-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title:
-                "Blockchain A-Z: Build a Blockchain, a Crypto + ChatGPT Prize",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Build a Blockchain & Cryptocurrency | Full-Stack Edition",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Ethereum and Solidity: The Complete Developer's Guide",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Flutter & Dart - The Complete Guide [2024 Edition]",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Flutter & Dart: SOLID Principles and Top Design Patterns",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Flutter Advanced: Bring your knowledge to next level",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Flutter Advanced: Pattern Designs and Animations",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-            {
-              title: "Flutter móvil: Recursos Nativos - Nivel intermedio",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
+              status: "Completed",
+              progress: 100,
             },
             {
               title: "GitLab CI/CD: Pipelines, CI/CD and DevOps for Beginners",
-              date: "2024 at Udemy",
+              date: formatDate("2024-10-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 75,
             },
             {
               title: "MERN Full Stack: MongoDB, Express, React y Node",
-              date: "2024 at Udemy",
+              date: formatDate("2024-11-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 25,
             },
             {
               title:
                 "NestJS Zero to Hero - Modern TypeScript Back-end Development",
-              date: "2024 at Udemy",
+              date: formatDate("2024-12-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 10,
             },
             {
               title: "NestJS: The Complete Developer's Guide",
-              date: "2024 at Udemy",
+              date: formatDate("2024-12-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 10,
             },
             {
               title: "Python for Data Science and Machine Learning Bootcamp",
-              date: "2024 at Udemy",
+              date: formatDate("2025-02-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 5,
             },
             {
               title: "React - The Complete Guide 2024 (incl. Next.js, Redux)",
-              date: "2024 at Udemy",
+              date: formatDate("2024-11-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 70,
             },
             {
               title: "SQL and PostgreSQL: The Complete Developer's Guide",
-              date: "2024 at Udemy",
+              date: formatDate("2025-01-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 8,
             },
             {
               title: "The Complete SQL Bootcamp: Go from Zero to Hero",
-              date: "2024 at Udemy",
+              date: formatDate("2025-01-01"),
               link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
               status: "In progress",
+              progress: 5,
             },
-            {
-              title: "TypeScript: Complete Guide",
-              date: "2024 at Udemy",
-              link: "https://www.linkedin.com/in/juangidoni/details/certifications/",
-              status: "In progress",
-            },
-          ]}
+            // sort by progress
+          ].sort((a, b) => b.progress - a.progress)}
         />
       </section>
     </>

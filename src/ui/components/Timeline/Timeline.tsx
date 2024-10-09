@@ -1,7 +1,8 @@
+// src/ui/components/Timeline/Timeline.tsx
 import TimelineItem from "./TimelineItem";
 
 type Props = {
-  items: Array<{ title: string; date: string; link: string; status: string }>;
+  items: Array<{ title: string; date: string; link: string; status: string; progress: number }>;
 };
 
 function Timeline({ items }: Props) {
@@ -14,6 +15,7 @@ function Timeline({ items }: Props) {
           date={item.date}
           link={item.link}
           status={item.status}
+          progress={item.progress}
         />
       ))}
       <a

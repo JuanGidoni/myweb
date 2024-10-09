@@ -3,7 +3,7 @@ import Icon from "../Icon/Icon";
 import Navbar from "../AsideNavbar/AsideNavbar";
 import { useEffect, useState } from "react";
 const AsideInfo = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   const [icon, setIcon] = useState("moon");
 
   useEffect(() => {
