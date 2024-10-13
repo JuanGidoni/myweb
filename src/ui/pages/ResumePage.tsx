@@ -80,21 +80,6 @@ const ResumePage = () => {
         </div>
         <ol className="timeline-list">
           <li className="timeline-item">
-            <h4 className="h4 timeline-item-title">Meta Frontend Developer</h4>
-            <span>2022 — 2023</span>
-            <ul className="timeline-text-class contact-info">
-              <li>
-                <a
-                  className="contact-link"
-                  href="https://www.coursera.org/account/accomplishments/specialization/certificate/JH49YNFJRFNH"
-                  target="_blank"
-                >
-                  View Coursera Credential
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li className="timeline-item">
             <h4 className="h4 timeline-item-title">
               Higher Technician Frontend Development
             </h4>
@@ -149,6 +134,13 @@ const ResumePage = () => {
 
         <Timeline
           items={[
+            {
+              title: "SI Associate Certification Program",
+              date: formatDate("2024-10-01"),
+              link: "https://learn.mongodb.com/c/E574IcgxSZeYfd-vsQMLfg",
+              status: "Completed",
+              progress: 100,
+            },
             {
               title: "Meta Frontend Developer",
               date: formatDate("2023-11-01"),
